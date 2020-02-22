@@ -108,3 +108,6 @@ venv.bak/
 
 # experiments
 /experiments
+
+# IntelliJ IDEA
+.idea/

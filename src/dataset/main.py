@@ -155,7 +155,7 @@ def fuse(args, all_configs):
             f.write(dom)
         if target == predicted:
             acc += 1
-    print "Accuracy: {}".format(float(acc) / (args.num_samples * len(all_configs)))
+    print("Accuracy: {}".format(float(acc) / (args.num_samples * len(all_configs))))
 
 
 def separate(args, all_configs):
@@ -254,11 +254,14 @@ def separate(args, all_configs):
             modifiable_attr = sample_attr_avail(rule_groups, row_3_3)
             answer_AoT = copy.deepcopy(row_3_3)
             candidates = [answer_AoT]
-            for j in range(7):
-                component_idx, attr_name, min_level, max_level = sample_attr(modifiable_attr)
-                answer_j = copy.deepcopy(answer_AoT)
-                answer_j.sample_new(component_idx, attr_name, min_level, max_level, answer_AoT)
-                candidates.append(answer_j)
+            for a in modifiable_attr[:3]:
+                component_idx, attr_name, _, min_level, max_level = a
+                temp_candidates = []
+                for candidate in candidates:
+                    c = copy.deepcopy(candidate)
+                    c.sample_new(component_idx, attr_name, min_level, max_level, answer_AoT)
+                    temp_candidates.append(c)
+                candidates.extend(temp_candidates)
 
             random.shuffle(candidates)
             answers = []
@@ -284,7 +287,7 @@ def separate(args, all_configs):
             
             if target == predicted:
                 acc += 1
-        print "Accuracy of {}: {}".format(key, float(acc) / args.num_samples)
+        print("Accuracy of {}: {}".format(key, float(acc) / args.num_samples))
 
 
 def main():
